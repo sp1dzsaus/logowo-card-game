@@ -44,7 +44,4 @@ class Card:
         if name.startswith(spell_prefix):
             return self.type.spells[name[len(spell_prefix):].lower()]
         raise AttributeError(f"type object 'Card' has no attribute '{name}'")
-
-
-
-        
+   
