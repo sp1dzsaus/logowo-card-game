@@ -1,4 +1,6 @@
 from pyglet.image import load as pygletimage
+from pyglet.gl import *
+from pyglet.text import Label
 from random import randint, choice
 
 
@@ -37,7 +39,16 @@ class Card:
         self.hp = type.max_hp
 
     def getImage(self):
-        return self.type.portrait
+        base = self.type.portrait.get_texture()
+        label = Label('Hello, world',
+                      font_name='Times New Roman',
+                      font_size=36,
+                      x=50, y=150,
+                      anchor_x='center', anchor_y='center')
+        glBindTexture(GL_TEXTURE_2D, base.id)
+        label.draw()
+        return base
+        
 
     def __getattr__(self, name):
         spell_prefix = 'spell_'
