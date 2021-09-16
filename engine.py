@@ -2,9 +2,13 @@ from mymaths import Vector2
 import pyglet
 
 class Sprite:
-    def __init__(self, image: pyglet.image.ImageData, position=Vector2(0, 0)):
+    def __init__(self, image: pyglet.image.ImageData, position=Vector2(0, 0), hitbox=None):
         self.image = image
         self.pos = position
+        if not hitbox:
+            self.hitbox = Vector2(image.width, image.height)
+        else:
+            self.hitbox = hitbox
 
     def move(self, x, y):
         self.pos += Vector2(x, y)
@@ -17,14 +21,24 @@ class Sprite:
         return self.pos + Vector2(self.image.width,
                                   self.image.height) / 2
 
+    def setImage(self, image):
+        if self.hitbox == Vector2(self.image.width, self.image.height):
+            self.hitbox = Vector2(image.width, image.height)
+        self.image = image
+
+    def isPointIntersects(self, point_pos):
+        a = self.pos
+        b = self.pos + self.hitbox
+        return a.x < point_pos.x < b.x and a.y < point_pos.y < b.y
+    
     def tick(self, dt):
         pass
 
 class Sign(Sprite):
     def __init__(self, background, text, position=Vector2(0, 0),
-                 text_shift=Vector2(0, 0),
+                 text_shift=Vector2(0, 0), hitbox=None,
                  **kwargs):
-        super().__init__(image=background, position=position)
+        super().__init__(image=background, position=position, hitbox=hitbox)
         self.label = pyglet.text.Label(text,
                                        x=position.x + text_shift.x,
                                        y=position.y + text_shift.y,
@@ -52,6 +66,7 @@ class CardSprite(Sign):
                          font_size=22)
 
     def tick(self, dt):
+        super().tick(dt)
         dist = pyglet.window.mouse_position - self.center
         self.move(*(dist / 10))
         
