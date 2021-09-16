@@ -11,6 +11,8 @@ glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 window.set_caption('Logowo: The Card Game')
 pyglet.window.mouse_position = Vector2(0, 0)
+pyglet.window.mouse_pressed = False
+pyglet.window.mouse_impulse = None
 
 @window.event
 def on_draw():
@@ -28,12 +30,25 @@ def on_key_press(symbol, modifiers):
         
 @window.event
 def on_mouse_press(x, y, button, modifiers):
-    pass
+    pyglet.window.mouse_pressed = True
+    if pyglet.window.mouse_impulse is None:
+        pyglet.window.mouse_impulse = True
+    
+@window.event
+def on_mouse_released(x, y, button, modifiers):
+    pyglet.window.mouse_pressed = False
+    pyglet.window.mouse_impulse = None
+    print('rel')
+    
+
 
 def tick(dt):
     FPS = pyglet.clock.get_fps()
     for sprite in sprites:
         sprite.tick(dt)
+    
+    if pyglet.window.mouse_impulse:
+        pyglet.window.mouse_impulse = False
 
 sprites = []
 def test():

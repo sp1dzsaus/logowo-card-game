@@ -18,15 +18,14 @@ class Sprite:
 
     @property
     def center(self):
-        return self.pos + Vector2(self.image.width,
-                                  self.image.height) / 2
+        return self.pos + self.hitbox / 2
 
     def setImage(self, image):
         if self.hitbox == Vector2(self.image.width, self.image.height):
             self.hitbox = Vector2(image.width, image.height)
         self.image = image
 
-    def isPointIntersects(self, point_pos):
+    def pointIntersection(self, point_pos):
         a = self.pos
         b = self.pos + self.hitbox
         return a.x < point_pos.x < b.x and a.y < point_pos.y < b.y
@@ -64,9 +63,20 @@ class CardSprite(Sign):
                          position=position,
                          text_shift=Vector2(50, 120),
                          font_size=22)
+        self.dragging = False
 
     def tick(self, dt):
         super().tick(dt)
-        dist = pyglet.window.mouse_position - self.center
-        self.move(*(dist / 10))
+        if pyglet.window.mouse_impulse:
+            if self.dragging:
+                self.dragging = False
+            elif self.pointIntersection(pyglet.window.mouse_position):
+                self.dragging = True
+        
+        
+        if self.dragging:
+            dist = pyglet.window.mouse_position - self.center
+            self.move(*(dist / 10))
+            
+        print(self.dragging)
         
