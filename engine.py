@@ -77,6 +77,5 @@ class CardSprite(Sign):
         if self.dragging:
             dist = pyglet.window.mouse_position - self.center
             self.move(*(dist / 10))
-            
-        print(self.dragging)
+
         

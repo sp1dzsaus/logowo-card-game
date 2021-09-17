@@ -35,10 +35,9 @@ def on_mouse_press(x, y, button, modifiers):
         pyglet.window.mouse_impulse = True
     
 @window.event
-def on_mouse_released(x, y, button, modifiers):
+def on_mouse_release(x, y, button, modifiers):
     pyglet.window.mouse_pressed = False
     pyglet.window.mouse_impulse = None
-    print('rel')
     
 
 
@@ -46,7 +45,7 @@ def tick(dt):
     FPS = pyglet.clock.get_fps()
     for sprite in sprites:
         sprite.tick(dt)
-    
+
     if pyglet.window.mouse_impulse:
         pyglet.window.mouse_impulse = False
 
