@@ -17,10 +17,9 @@ class Spell:
 class CardType:
     # Default parameters
     max_hp = 10
-    portrait = image('cards/what')
-    spells = {}
 
     def __init__(self, portrait, **kwargs):
+        self.spells = {}
         self.portrait = image(portrait)
         for key, value in kwargs.items():
             self.__setattr__(key, value)
