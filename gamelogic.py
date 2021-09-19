@@ -86,7 +86,7 @@ class RandyAI(AbstractPlayer):
             return
 
         if random.randint(1, 4) == 1:
-            self.changeActiveCard(random.randint(1, 3), random.choice(self.deck))
+            self.changeActiveCard(random.randint(0, 2), random.choice(self.deck))
         else:
             target = random.choice([card for card in opponent.active_cards if card])
             attacker = random.choice([card for card in self.active_cards if card])
